@@ -1,89 +1,49 @@
 <?php
+	//	Define the root path to the curlBuddy PHP file
+	define('__CURL_BUDDY_DIR__', realpath(dirname(__FILE__)));
+
+	//	Include method classes
+	require_once(__CURL_BUDDY_DIR__ . '/methods/basic.method.php');
+	require_once(__CURL_BUDDY_DIR__ . '/methods/get.method.php');
+	require_once(__CURL_BUDDY_DIR__ . '/methods/post.method.php');
+	require_once(__CURL_BUDDY_DIR__ . '/methods/put.method.php');
+	require_once(__CURL_BUDDY_DIR__ . '/methods/patch.method.php');
+	require_once(__CURL_BUDDY_DIR__ . '/methods/delete.method.php');
+
 	/**
 	 *	Simple PHP cURL wrapper 
 	**/
 	final class curlBuddy{
 
-		//	Standard/default curl options
-		private $_standard_opts = array(
-			//	TRUE to include the header in the output.
-			CURLOPT_HEADER => false,
-			//	TRUE to return the transfer as a string of the return value of curl_exec() 
-			//	instead of outputting it out directly.
-			CURLOPT_RETURNTRANSFER => true,
-			//	1 to check the existence of a common name in the SSL peer certificate. 
-			//	2 to check the existence of a common name and also verify that it matches the hostname provided. 
-			CURLOPT_SSL_VERIFYHOST => false,
-			//	FALSE to stop cURL from verifying the peer's certificate. 
-			CURLOPT_SSL_VERIFYPEER => false,
-			//	TRUE to follow any "Location: " header that the server sends as part of the HTTP header
-			CURLOPT_FOLLOWLOCATION => true,
-			//	The maximum amount of HTTP redirections to follow.
-			CURLOPT_MAXREDIRS => 20,
-			//	The maximum number of milliseconds to allow cURL functions to execute.
-			//	1000ms in 1s => 60,000ms is 60s
-			CURLOPT_TIMEOUT_MS => 60000,
-		);
-		//	User defined opts.
-		//	Can append to the standard opts or override it.
-		private $_u_defined_opts = array();
-		//	Standard/default curl headers
-		private $_standard_headers = array();
-		//	User defined headers
-		private $_u_defined_headers = array();
-
 		//	Creates a new instance of curlBuddy
-		public function __construct($u_defined_opts=array()){
-			//	Set user defined options
-			if(is_array($u_defined_opts)){
-				$this->setOpts($u_defined_opts);
-			}
-		}
+		public function __construct(){}
 
-		//	Set options for the curl request
-		//	*	$opt 	-	(required) The CURLOPT_XXX option to set
-		//	*	$value 	-	(required) The value of the option
-		public function setOpt($opt, $value){
-			//	Options set here will be contain within the $_u_defined_opts array;
-			$this->_u_defined_opts[$opt] = $value;
-		}
-
-		//	Set an array of options
-		//	*	$opts 	-	(required) Array containing CURLOPT_XXX => value
-		public function setOpts($opts=array()){
-			if(is_array($opts)){
-				foreach($opts as $opt => $value){
-					$this->setOpt($opt, $value);
+		//	Magic call function to direct non existing methods to a
+		//	method file within the methods directory. 
+		//	format: /path/to/methods/methodName.method.php
+		//			$obj = new methodName($args)
+		public function __call($name, $arguments){
+			$obj = false;
+			$methods_path = __CURL_BUDDY_DIR__ . '/methods';
+			if(is_dir($methods_path)){
+				$method_file = $methods_path . "/{$name}.method.php";
+				if(file_exists($method_file)){
+					require_once($method_file);
+					$method = "{$name}Method";
+					if(class_exists($method)){
+						$r = new ReflectionClass($method);
+						$obj = $r->newInstanceArgs($arguments);
+					}
 				}
 			}
-		}
-
-		//	Set headers for the curl request
-		//	*	$header 	-	(required | string | Format: Content-Type:) The header name 
-		//	*	$value 		-	(required | string) The header value string
-		//	
-		//	Example: setHeader('Content-Type:', 'application/x-www-form-urlencoded; charset=utf-8')
-		public function setHeader($header, $value){
-			//	Headers set here will be contained within the $_u_defined_headers array
-			//	Format: "myHeader:"
-			$header = preg_replace('/::$/', ':', $header . ':');
-			$this->_u_defined_headers[$header] = $value;
-		}
-
-		//	Set an array of headers
-		//	*	$headers 	-	(required | array) Array of header name => value
-		//
-		//	Example: setHeaders(array('Conent-Type:'=>'application/x-www-form-urlencoded; charset=utf-8', 'Cache-Control:'=>'no-cache'))
-		public function setHeaders($headers=array()){
-			if(is_array($headers)){
-				foreach($headers as $header => $value){
-					$this->setHeader($header, $value);
-				}
+			if($obj == false){
+				trigger_error('Call to undefined method ' . __CLASS__ . '::' . $name . '()', E_USER_ERROR);
 			}
+			return $obj;
 		}
 
-		//	Execute the curl request
-		public function send(){
-			return true;
+		//	Returns an instance of the curlBuddy object
+		public function newCurl(){
+			return $this;
 		}
 	}
