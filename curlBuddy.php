@@ -1,17 +1,24 @@
 <?php
-	//	Define the root path to the curlBuddy PHP file
+	/**
+	 *	Constants 
+	**/
 	define('__CURL_BUDDY_DIR__', realpath(dirname(__FILE__)));
 
-	//	Include method classes
+	/**
+	 *	Includes
+	**/
 	require_once(__CURL_BUDDY_DIR__ . '/methods/basic.method.php');
-	require_once(__CURL_BUDDY_DIR__ . '/methods/get.method.php');
-	require_once(__CURL_BUDDY_DIR__ . '/methods/post.method.php');
-	require_once(__CURL_BUDDY_DIR__ . '/methods/put.method.php');
-	require_once(__CURL_BUDDY_DIR__ . '/methods/patch.method.php');
-	require_once(__CURL_BUDDY_DIR__ . '/methods/delete.method.php');
 
 	/**
-	 *	Simple PHP cURL wrapper 
+	 *	Simple and super easy to use cURL handler wrapper.
+	 *
+	 *	PHP version 5
+	 *
+	 *	@author     Tan Ha <tan.ha@devcodestudio.com>
+	 *	@copyright	
+	 *	@license	
+	 *	@version 	
+	 *	@link 		
 	**/
 	final class curlBuddy{
 
