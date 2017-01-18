@@ -9,6 +9,7 @@ $curl_h = new curlBuddy();
 ######// Start a new curl request
 $post_h = $curl_buddy->newCurl()->post('https://api.somedomain.com/v3/somefile.xml');
 ######// Set POST body data (optional)
+######// The data can be a string or an associated array
 $post_h->setData('<?xml version="1.0" encoding="UTF-8"?><request>...</request>');
 ######// Set custom headers (optional)
 $post_h->setHeader('Content-Type:', 'application/xml; charset=UTF-8');
