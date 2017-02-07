@@ -5,9 +5,9 @@ Simple and super easy to use PHP cURL handler wrapper.
 ######// Include curlBuddy in your project
 include_once('/path/to/curlBuddy/curlBuddy.php');
 ######// Create a new instance of curlBuddy
-$curl_h = new curlBuddy();
+$curl_buddy = new curlBuddy();
 ######// Start a new curl request
-$post_h = $curl_h->newCurl()->post('https://api.somedomain.com/v3/somefile.xml');
+$post_h = $curl_buddy->newCurl()->post('https://api.somedomain.com/v3/somefile.xml');
 ######// Set POST body data (optional)
 ######// The data can be a string or an associated array
 $post_h->setData('<?xml version="1.0" encoding="UTF-8"?><request>...</request>');
