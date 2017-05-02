@@ -1,24 +1,12 @@
 <?php
-	/**
-	 *	Constants 
-	**/
+	//	Define the root path to the curlBuddy PHP file
 	define('__CURL_BUDDY_DIR__', realpath(dirname(__FILE__)));
 
-	/**
-	 *	Includes
-	**/
-	require_once(__CURL_BUDDY_DIR__ . '/methods/basic.method.php');
+	//	Includes
+	require_once(__CURL_BUDDY_DIR__ . '/commons/curl.class.php');
 
 	/**
-	 *	Simple and super easy to use cURL handler wrapper.
-	 *
-	 *	PHP version 5
-	 *
-	 *	@author     Tan Ha <tan.ha@devcodestudio.com>
-	 *	@copyright	
-	 *	@license	
-	 *	@version 	
-	 *	@link 		
+	 *	Simple PHP cURL wrapper 
 	**/
 	final class curlBuddy{
 
@@ -44,7 +32,8 @@
 				}
 			}
 			if($obj == false){
-				trigger_error('Call to undefined method ' . __CLASS__ . '::' . $name . '()', E_USER_ERROR);
+				// trigger_error('Call to undefined method ' . __CLASS__ . '::' . $name . '()', E_USER_ERROR);
+				throw new Exception('Call to undefined method ' . __CLASS__ . '::' . $name . '()', 500);
 			}
 			return $obj;
 		}

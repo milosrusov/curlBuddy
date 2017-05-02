@@ -2,7 +2,7 @@
 	/**
 	 *	HTTP GET method
 	**/
-	class getMethod extends basicMethod{
+	class getMethod extends curl{
 
 		//	Creates a new instance of this class
 		//	*	$u_defined_opts 	-	(optional | array) Initial array of user

@@ -2,7 +2,7 @@
 	/**
 	 *	HTTP PATCH method
 	**/
-	class patchMethod extends basicMethod{
+	class patchMethod extends curl{
 
 		//	Creates a new instance of this class
 		//	*	$u_defined_opts 	-	(optional | array) Initial array of user
